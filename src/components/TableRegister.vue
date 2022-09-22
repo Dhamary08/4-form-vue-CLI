@@ -6,17 +6,20 @@
 
 <script>
 export default {
+  props: {
+    items: Array,
+  },
   data() {
     return {
       fields: [
-        { key: 'full_name', label: 'Nombre' },
+        { key: 'name', label: 'Nombre' },
         { key: 'nickname', label: 'Apodo' },
         { key: 'email', label: 'Correo Electónico' },
       ],
-      items: [
-
-      ],
     };
   },
+  /* methods:{
+
+  } */
 };
 </script>

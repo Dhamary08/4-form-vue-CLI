@@ -112,6 +112,7 @@ export default {
         password: '',
         email: '',
         terms: false,
+        nickname: '',
       },
     };
   },
@@ -161,12 +162,11 @@ export default {
           autoHideDelay: 5000,
           variant: 'success',
         });
+        this.$emit('sent-form', this.model);
       }
     },
   },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
