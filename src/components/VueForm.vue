@@ -1,10 +1,11 @@
 <template>
   <div class="fcc my-5">
+    <h3 class="mb-4">Registro</h3>
     <vue-form :state="formState" @submit.prevent="submit()" class="d-flex">
       <b-container>
         <b-row>
-          <b-col cols="12">
-            <h3 class="mb-4">Registro</h3>
+          <b-col cols="6">
+            <!-- NOMBRE COMPLETO -->
             <validate tag="label" :custom="{ validator: fullNameValidator }">
               <label for="name" class="d-flex flex-column text-left">
                 Nombre
@@ -19,8 +20,23 @@
               </field-messages>
             </validate>
           </b-col>
+          <b-col cols="6">
+            <validate tag="label" :custom="{ validator: nicknameValidator }">
+              <label for="nickname" class="d-flex flex-column text-left">
+                Apodo
+                <input type="text" v-model="model.nickname" name="nickname" required />
+              </label>
+              <field-messages>
+                <div class="text-success small">Correcto</div>
+                <div slot="required" class="small">solo letras y números</div>
+                <div slot="validator" class="small text-danger">
+                  El apodo es obligatorio
+                </div>
+              </field-messages>
+            </validate>
+          </b-col>
           <!-- EMAIL -->
-          <b-col cols="12 my-3">
+          <b-col cols="6 my-3">
             <validate tag="label" :custom="{ validator: mailValidator }">
               <label for="email" class="d-flex flex-column text-left">
                 Correo Electrónico
@@ -36,7 +52,7 @@
             </validate>
           </b-col>
           <!-- CONTRASEÑA -->
-          <b-col cols="12 my-3">
+          <b-col cols="6 my-3">
             <validate tag="label" :custom="{ validator: passwordValidator }">
               <label for="password" class="d-flex flex-column text-left">
                 Contraseña
@@ -75,14 +91,14 @@
         </b-row>
       </b-container>
     </vue-form>
-    <pre>
+    <!-- <pre>
       invalid: {{ formState.$invalid }}
       valid: {{ formState.$valid }}
     </pre>
     submittedState: {{ formState.$submittedState }}
     <div v-for="(value, key) in formState.$error" :key="key">
       <p>{{ key }} : {{ value }}</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -110,6 +126,13 @@ export default {
       }
       return response;
     },
+    nicknameValidator: (value) => {
+      let response = false;
+      if (!/[^a-zA-Z0-9]/.test(value)) {
+        response = true;
+      }
+      return response;
+    },
     passwordValidator: (value) => {
       let response = false;
       if (/[0-9]/g.test(value) && value.length > 8) {
@@ -127,9 +150,17 @@ export default {
     termsValidator: (value) => value,
     submit() {
       if (this.formState.$invalid) {
-        alert('Error al enviar formulario');
+        this.$bvToast.toast('Error al enviar el formulario', {
+          title: 'Alerta',
+          autoHideDelay: 5000,
+          variant: 'warning',
+        });
       } else {
-        alert('Fomulario Enviado');
+        this.$bvToast.toast('Formulario enviado con éxito', {
+          title: 'Mensaje',
+          autoHideDelay: 5000,
+          variant: 'success',
+        });
       }
     },
   },
@@ -137,11 +168,5 @@ export default {
 </script>
 
 <style scoped>
-.fcc {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 500px;
-  margin: auto;
-}
+
 </style>
